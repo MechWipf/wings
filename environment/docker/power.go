@@ -183,7 +183,7 @@ func (e *Environment) Stop(ctx context.Context) error {
 	// Using a negative timeout here will allow the container to stop gracefully,
 	// rather than forcefully terminating it.  Value is in seconds, but -1 is
 	// treated as indefinitely.
-	timeout := (int(^uint(0) >> 1))
+	timeout := 2147483647
 	if err := e.client.ContainerStop(ctx, e.Id, container.StopOptions{Timeout: &timeout}); err != nil {
 		// If the container does not exist just mark the process as stopped and return without
 		// an error.
