@@ -5,6 +5,7 @@ import (
 	"os"
 	"strings"
 	"time"
+	"math"
 
 	"emperror.dev/errors"
 	"github.com/apex/log"
@@ -186,9 +187,9 @@ func (e *Environment) Stop(ctx context.Context) error {
 	// another signal was specified in the Dockerfile
 	//
 	// Using a negative timeout here will allow the container to stop gracefully,
-	// rather than forcefully terminating it.  Value is in seconds, but -1 is
-	// treated as indefinitely.
-	timeout := -1
+	// rather than forcefully terminating it.  Value is in seconds, -1 causes errors with
+	// the podman compatibility layer
+	timeout := math.MaxInt
 	if err := e.client.ContainerStop(ctx, e.Id, container.StopOptions{Timeout: &timeout}); err != nil {
 		// If the container does not exist just mark the process as stopped and return without
 		// an error.
